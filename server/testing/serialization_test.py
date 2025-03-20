@@ -41,8 +41,8 @@ class TestSerialization:
     def test_review_is_serializable(self):
         '''review is serializable'''
         with app.app_context():
-            c = Customer()
-            i = Item()
+            c = Customer(name='Phil')
+            i = Item(name='Insulated Mug', price=9.99)
             db.session.add_all([c, i])
             db.session.commit()
 
@@ -52,8 +52,8 @@ class TestSerialization:
 
             review_dict = r.to_dict()
             assert review_dict['id']
-            assert review_dict['customer']
-            assert review_dict['item']
+            assert review_dict['customer'] == 'Phil'
+            assert review_dict['item'] == 'Insulated Mug'
             assert review_dict['comment'] == 'great!'
             assert 'reviews' not in review_dict['customer']
             assert 'reviews' not in review_dict['item']
